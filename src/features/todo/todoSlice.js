@@ -16,10 +16,17 @@ export const todoSlice = createSlice({
       state.todo = state.todo.filter((item) => item.id !== action.payload);
     },
     edittodo: (state, action) => {},
+    completedtodo: (state, action) => {
+      state.todo = state.todo.map((item) => 
+        item.id === action.payload
+          ? { ...item, is_completed: !item.is_completed }
+          : item
+      );
+    },
   },
 });
 
-export const { addtodo, deletetodo, edittodo } = todoSlice.actions;
+export const { addtodo, deletetodo, edittodo,completedtodo } = todoSlice.actions;
 
 export const selectTodo = (state) => state.todo;
 

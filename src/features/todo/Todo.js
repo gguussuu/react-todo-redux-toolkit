@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addtodo, deletetodo, edittodo, selectTodo } from "./todoSlice";
+import {
+  addtodo,
+  deletetodo,
+  edittodo,
+  selectTodo,
+  completedtodo,
+} from "./todoSlice";
 import TodoList from "../../TodoList";
 
 export function Todo() {
@@ -38,15 +44,7 @@ export function Todo() {
     dispatch(deletetodo(id));
   };
   const onComplete = (id) => {
-    //같은 아이디를 찾는다 -> 데이터를 바꿔준다
-    setList(
-      list.map((item) => {
-        if (item.id === id) {
-          item.is_completed = !item.is_completed; // 토글로 참,거짓 바꿔주기
-        }
-        return item; // 왜 그대로 반환해야 하는지?
-      })
-    );
+    dispatch(completedtodo(id));
   };
 
   //수정 기능
