@@ -14,26 +14,28 @@ export function Todo() {
 
   useEffect(() => {
     setText("");
-    setId(id+1)
   }, [todo]);
 
+  const AddTodoItem = () => {
+    dispatch(
+      addtodo({
+        todo: {
+          id: id,
+          title: text,
+          is_completed: false,
+          is_edit_button: false,
+        },
+      })
+    );
+    setId(id + 1);
+  };
   const AddKeyPress = (e) => {
     if (e.key === "Enter") {
-      dispatch(
-        addtodo({
-          todo: {
-            id: id,
-            title: text,
-            is_completed: false,
-            is_edit_button: false,
-          },
-        })
-      );
+      AddTodoItem();
     }
   };
   const onDelete = (id) => {
-    setList(list.filter((item) => item.id !== id));
-    // 같은 아이디만 삭제
+    dispatch(deletetodo(id));
   };
   const onComplete = (id) => {
     //같은 아이디를 찾는다 -> 데이터를 바꿔준다
@@ -99,22 +101,7 @@ export function Todo() {
           placeholder="Add a todo item"
           onKeyPress={AddKeyPress}
         />
-        <button
-          onClick={() =>
-            dispatch(
-              addtodo({
-                todo: {
-                  id: id,
-                  title: text,
-                  is_completed: false,
-                  is_edit_button: false,
-                },
-              })
-            )
-          }
-        >
-          Add Todo
-        </button>
+        <button onClick={() => AddTodoItem()}>Add Todo</button>
       </div>
 
       <TodoList
