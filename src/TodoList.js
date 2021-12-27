@@ -5,10 +5,12 @@ import {
   MdCreate,
 } from "react-icons/md";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setEdit, edittodo } from "./features/todo/todoSlice";
 
-const TodoList = ({ list, onDelete, onComplete, onEdit, handleUpdate }) => {
+const TodoList = ({ list, onDelete, onComplete }) => {
+  const dispatch = useDispatch();
   const [editText, setEditText] = useState("");
-
   return (
     <div>
       <ul style={{ listStyle: "none", paddingLeft: 0 }}>
@@ -25,7 +27,6 @@ const TodoList = ({ list, onDelete, onComplete, onEdit, handleUpdate }) => {
                 padding: "0 15px",
               }}
             >
-              {" "}
               <span
                 style={{ marginRight: "10px", cursor: "pointer" }}
                 onClick={() => onComplete(todoitem.id)}
@@ -44,10 +45,17 @@ const TodoList = ({ list, onDelete, onComplete, onEdit, handleUpdate }) => {
                     : "none",
                 }}
               >
-                {todoitem.is_edit_button ? (
+                {todoitem.isEditing ? (
                   <input
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
+                    onKeyPress={(e) =>
+                      e.key === "Enter"
+                        ? dispatch(
+                            edittodo({ id: todoitem.id, title: editText })
+                          )
+                        : null
+                    }
                   /> //업데이트 된 데이터를 바꿔줌
                 ) : (
                   todoitem.title // 기존 todo value
@@ -67,14 +75,17 @@ const TodoList = ({ list, onDelete, onComplete, onEdit, handleUpdate }) => {
               </span>
               <span
                 onClick={() => {
-                  if (todoitem.is_edit_button) {
-                    handleUpdate(todoitem.id, editText);
-                    setEditText("");
+                  if (!todoitem.isEditing) {
+                    dispatch(setEdit({ id: todoitem.id }));
+                    setEditText(todoitem.title);
+                  } else {
+                    // edit 기능 dispatch
+                    dispatch(edittodo({ id: todoitem.id, title: editText }));
                   }
-                  onEdit(todoitem.id);
                 }}
+                style={{ cursor: "pointer" }}
               >
-                <MdCreate />
+                {todoitem.isEditing ? <button>수정완료</button> : <MdCreate />}
               </span>
             </li>
           );
