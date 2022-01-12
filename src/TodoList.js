@@ -1,12 +1,12 @@
-import {
-  MdRemoveCircleOutline,
-  MdCheckBoxOutlineBlank,
-  MdCheckBox,
-  MdCreate,
-} from "react-icons/md";
 import { useState } from "react";
+import {
+  MdCheckBox,
+  MdCheckBoxOutlineBlank,
+  MdCreate,
+  MdRemoveCircleOutline,
+} from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { setEdit, edittodo } from "./features/todo/todoSlice";
+import { edittodo, setEdit } from "./features/todo/todoSlice";
 
 const TodoList = ({ list, onDelete, onComplete }) => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const TodoList = ({ list, onDelete, onComplete }) => {
   return (
     <div>
       <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-        {list.map((todoitem, index) => {
+        {list && list.map((todoitem, index) => {
           return (
             <li
               key={index}
