@@ -9,7 +9,7 @@ export function Todo() {
   const dispatch = useDispatch();
 
   const [text, setText] = useState("");
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(1);
 
   useEffect(() => {
     setText("");
